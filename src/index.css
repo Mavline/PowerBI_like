@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg-primary: #000000;
+  --color-bg-secondary: #111111;
+  --color-accent-green: #00ff00;
+  --color-accent-purple: #ff00ff;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #cccccc;
+}
+
+@layer components {
+  .dashboard-item {
+    @apply border border-[#333] rounded-lg shadow-lg bg-[var(--color-bg-secondary)] p-4;
+  }
+  
+  .btn {
+    @apply px-4 py-2 rounded-md text-[var(--color-text-primary)] bg-[var(--color-accent-green)] hover:bg-[#00cc00] transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply px-4 py-2 rounded-md text-[var(--color-text-primary)] bg-[var(--color-accent-purple)] hover:bg-[#cc00cc] transition-colors;
+  }
+  
+  .input {
+    @apply px-3 py-2 border border-[#333] rounded-md bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-green)];
+  }
+  
+  .select {
+    @apply px-3 py-2 border border-[#333] rounded-md bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-green)];
+  }
+
+  body {
+    @apply bg-[var(--color-bg-primary)] text-[var(--color-text-primary)];
+  }
+
+  .top-controls {
+    @apply w-full flex flex-col space-y-4 p-4 bg-[var(--color-bg-secondary)] border-b border-[#333];
+  }
+
+  .header-selector {
+    @apply flex items-center space-x-2 p-2 border border-[#333] rounded bg-[var(--color-bg-secondary)];
+  }
+}
