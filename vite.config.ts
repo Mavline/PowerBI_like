@@ -7,15 +7,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
-    hmr: {
-      clientPort: 443,
-      protocol: 'wss',
-      timeout: 120000,
-      overlay: false
-    },
-    watch: {
-      usePolling: true
-    },
+    hmr: false,
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
