@@ -124,7 +124,7 @@ export function DashboardItem({ item, isActive, onActivate, onRemove, onExport }
     if (['bar', 'line', 'column'].includes(item.type)) {
       const xField = item.fields.xAxis;
       const yField = item.fields.yAxis;
-      
+
       if (!xField || !yField) return null;
 
       try {
@@ -136,8 +136,8 @@ export function DashboardItem({ item, isActive, onActivate, onRemove, onExport }
 
         return {
           labels: uniqueX,
-          values: values,
-          type: 'text'
+          values: values.map(v => parseFloat(v) || 0),
+          type: 'numeric'
         }
       } catch (error) {
         console.error('Error processing data:', error);
@@ -149,7 +149,7 @@ export function DashboardItem({ item, isActive, onActivate, onRemove, onExport }
     if (['pie', 'donut'].includes(item.type)) {
       const categoryField = item.fields.category;
       const valuesField = item.fields.values;
-      
+
       if (!categoryField || !valuesField) return null;
 
       const categories = Array.from(new Set(data.map(row => String(row[categoryField]))));
@@ -160,8 +160,8 @@ export function DashboardItem({ item, isActive, onActivate, onRemove, onExport }
 
       return {
         labels: categories,
-        values,
-        type: 'text'
+        values: values.map(v => parseFloat(v) || 0),
+        type: 'numeric'
       };
     }
 
@@ -169,7 +169,7 @@ export function DashboardItem({ item, isActive, onActivate, onRemove, onExport }
     if (item.type === 'treemap') {
       const categoryField = item.fields.category;
       const valuesField = item.fields.values;
-      
+
       if (!categoryField || !valuesField) return null;
 
       const categories = Array.from(new Set(data.map(row => String(row[categoryField]))));
@@ -180,8 +180,8 @@ export function DashboardItem({ item, isActive, onActivate, onRemove, onExport }
 
       return {
         labels: categories,
-        values,
-        type: 'text'
+        values: values.map(v => parseFloat(v) || 0),
+        type: 'numeric'
       };
     }
 
@@ -190,7 +190,7 @@ export function DashboardItem({ item, isActive, onActivate, onRemove, onExport }
       const xField = item.fields.xAxis;
       const yField = item.fields.yAxis;
       const seriesField = item.fields.series;
-      
+
       if (!xField || !yField || !seriesField) return null;
 
       const uniqueX = Array.from(new Set(data.map(row => String(row[xField]))));
@@ -231,7 +231,7 @@ export function DashboardItem({ item, isActive, onActivate, onRemove, onExport }
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, fieldName: string) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     const column = e.dataTransfer.getData('column');
     if (!column) return;
 
@@ -252,7 +252,7 @@ export function DashboardItem({ item, isActive, onActivate, onRemove, onExport }
     } else if (type === 'drag') {
       setIsDragging(true);
     }
-    
+
     setStartPos({ x: e.clientX, y: e.clientY });
     setStartSize({ width: item.size.width, height: item.size.height });
   };
@@ -481,7 +481,7 @@ export function DashboardItem({ item, isActive, onActivate, onRemove, onExport }
           }
         },
         y: {
-          type: 'category',
+          type: 'linear',
           grid: { color: 'rgba(51, 51, 51, 0.5)' },
           stacked: ['stackedBar', 'stackedColumn'].includes(item.type),
           beginAtZero: true,
@@ -518,7 +518,7 @@ export function DashboardItem({ item, isActive, onActivate, onRemove, onExport }
       datasets: processedData.series ? 
         processedData.series.map((series, i) => ({
           label: series.name,
-          data: series.data,
+          data: series.data.map(v => parseFloat(v) || 0),
           backgroundColor: chartConfigs[item.type].colors[i % colorPalette.length],
           borderColor: chartConfigs[item.type].colors[i % colorPalette.length],
           borderWidth: 1,
@@ -526,7 +526,7 @@ export function DashboardItem({ item, isActive, onActivate, onRemove, onExport }
         })) : 
         [{
           label: item.fields.yAxis || '',
-          data: processedData.values,
+          data: processedData.values.map(v => parseFloat(v) || 0),
           backgroundColor: item.type === 'line' ? chartConfigs[item.type].colors[0] : colorPalette,
           borderColor: item.type === 'line' ? chartConfigs[item.type].colors[0] : colorPalette.map(c => c.replace('0.8', '1')),
           borderWidth: 1
