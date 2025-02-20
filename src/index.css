@@ -2,8 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  background: #000000 !important;
+  transition: none !important;
+}
+
+body {
+  background: #000000 !important;
+  transition: none !important;
+}
+
+#root {
+  background: #000000 !important;
+  transition: none !important;
+}
+
 :root {
-  background-color: #000000;
+  background: #000000 !important;
+  transition: none !important;
 }
 
 body {
