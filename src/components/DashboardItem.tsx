@@ -127,27 +127,16 @@ export function DashboardItem({ item, isActive, onActivate, onRemove, onExport }
       
       if (!xField || !yField) return null;
 
-      // Get unique x values
-      const uniqueX = Array.from(new Set(data.map(row => String(row[xField]))));
-      
-      // Create value map for faster lookups
-      const valueMap = new Map<string, string>();
-      let isNumeric = true;
-
       try {
-        data.forEach(row => {
-          const xValue = String(row[xField]);
-          const yValue = row[yField];
-          
-          valueMap.set(xValue, String(yValue ?? ''));
-          if (yValue !== null && yValue !== undefined) {
-            isNumeric = false; // Всегда считаем как текст
-          }
+        const uniqueX = Array.from(new Set(data.map(row => String(row[xField]))));
+        const values = uniqueX.map(x => {
+          const row = data.find(r => String(r[xField]) === x);
+          return row ? String(row[yField]) : '';
         });
 
         return {
           labels: uniqueX,
-          values: uniqueX.map(x => valueMap.get(x) || ''),
+          values: values,
           type: 'text'
         }
       } catch (error) {
@@ -455,7 +444,7 @@ export function DashboardItem({ item, isActive, onActivate, onRemove, onExport }
               const defaultLabels = ChartJS.defaults.plugins.legend.labels.generateLabels(chart);
               return defaultLabels.map(label => ({ 
                 ...label, 
-                text: `${label.text}: ${label.index !== undefined ? chart.data.datasets[0].data[label.index] : ''}`
+                text: label.text
               }));
             }
           }
@@ -529,7 +518,7 @@ export function DashboardItem({ item, isActive, onActivate, onRemove, onExport }
       datasets: processedData.series ? 
         processedData.series.map((series, i) => ({
           label: series.name,
-          data: series.data.map(() => 1),
+          data: series.data,
           backgroundColor: chartConfigs[item.type].colors[i % colorPalette.length],
           borderColor: chartConfigs[item.type].colors[i % colorPalette.length],
           borderWidth: 1,
@@ -537,9 +526,9 @@ export function DashboardItem({ item, isActive, onActivate, onRemove, onExport }
         })) : 
         [{
           label: item.fields.yAxis || '',
-          data: processedData.values.map(() => 1),
-          backgroundColor: colorPalette,
-          borderColor: chartConfigs[item.type].colors[1],
+          data: processedData.values,
+          backgroundColor: item.type === 'line' ? chartConfigs[item.type].colors[0] : colorPalette,
+          borderColor: item.type === 'line' ? chartConfigs[item.type].colors[0] : colorPalette.map(c => c.replace('0.8', '1')),
           borderWidth: 1
         }]
     };
