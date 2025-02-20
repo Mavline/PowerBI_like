@@ -8,7 +8,7 @@ ChartJS.defaults.maintainAspectRatio = false;
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#000000] transition-colors duration-300">
       <Dashboard />
     </div>
   );

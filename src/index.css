@@ -3,6 +3,19 @@
 @tailwind utilities;
 
 :root {
+  background-color: #000000;
+}
+
+body {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+#root {
+  background-color: #000000;
+}
+
+:root {
   --color-bg-primary: #000000;
   --color-bg-secondary: #111111;
   --color-accent-green: #00ff00;
