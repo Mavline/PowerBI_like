@@ -9,7 +9,9 @@ export default defineConfig({
     host: '0.0.0.0',
     hmr: {
       clientPort: 443,
-      protocol: 'wss'
+      protocol: 'wss',
+      timeout: 120000,
+      overlay: false
     },
     watch: {
       usePolling: true
