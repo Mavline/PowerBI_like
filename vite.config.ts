@@ -16,7 +16,11 @@ export default defineConfig({
     },
     headers: {
       'Access-Control-Allow-Origin': '*'
-    }
+    },
+    allowedHosts: [
+      '*.replit.dev',
+      '*.pike.replit.dev'
+    ]
   },
   preview: {
     host: '0.0.0.0',
